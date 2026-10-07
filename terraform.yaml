@@ -1,0 +1,26 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: s3-bucket
+  namespace: flux-system
+spec:
+  interval: 5m
+  retryInterval: 30s
+  approvePlan: auto
+  upgradeOnInit: false
+  path: ./s3
+  sourceRef:
+    kind: GitRepository
+    name: s3-example
+  serviceAccountName: tf-runner
+  destroyResourcesOnDeletion: true
+  varsFrom:
+    - kind: ConfigMap
+      name: s3-variables
+  runnerPodTemplate:
+    spec:
+      envFrom:
+        - secretRef:
+            name: aws-credentials
+  writeOutputsToSecret:
+    name: s3-bucket-outputs
