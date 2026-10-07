@@ -35,7 +35,7 @@ variable "bucket_name" {
 
 resource "aws_s3_bucket" "example" {
   bucket        = var.bucket_name
-  force_destroy = false
+  force_destroy = true
 
   tags = {
     ManagedBy = "tofu-controller"
